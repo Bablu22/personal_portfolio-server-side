@@ -20,6 +20,7 @@ async function run() {
         // create database
         const database = client.db("portfolio");
         const projectCollection = database.collection("projects");
+        const blogCollection = database.collection("blog");
 
         app.get('/projects', async (req, res) => {
             const cursor = projectCollection.find({})
@@ -30,6 +31,19 @@ async function run() {
             const id = req.params.id
             const query = { _id: ObjectId(id) }
             const result = await projectCollection.findOne(query)
+            res.json(result)
+        })
+
+        // blog 
+        app.get('/blog', async (req, res) => {
+            const cursor = blogCollection.find({})
+            const result = await cursor.toArray()
+            res.json(result)
+        })
+        app.get('/blog/:id', async (req, res) => {
+            const id = req.params.id
+            const query = { _id: ObjectId(id) }
+            const result = await blogCollection.findOne(query)
             res.json(result)
         })
 
